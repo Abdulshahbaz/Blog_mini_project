@@ -30,10 +30,8 @@ class AdminController extends Controller
           // thise condition check thise admin exits are not 
 
             $admin = Admin::where('email',$request->email)->first();
-
             if($admin && Hash::check($request->password,$admin->password))
-            {  
-                // dd('successfull login');           
+            {            
                 return redirect()->route('dashboard')->with('success','successfully Login Admin');
             }                                                  
            return redirect()->back()->with('error','Please Eneter Valid Email and Pasword');
@@ -58,13 +56,12 @@ class AdminController extends Controller
     public function edits($id)
     {
         $post = Postblog::find($id);
-        return view('admin.edit',compact('post'));
+        return view('admin.edit',['post'=>$post]);
     }
 
     // update post 
     public function update_post(Request $request,$id)
     {
-        //dd('dfghn');
         $posts = Postblog::find($id);
         if(!$posts)
         {
@@ -125,7 +122,7 @@ class AdminController extends Controller
             $postDelete->delete();
             
         }
-        return redirect('dashboard')->with('error','success','Record Deleted SuccessFully!');
+        return redirect('dashboard')->with('error','success','Post Deleted SuccessFully!');
     }
 
 }                  

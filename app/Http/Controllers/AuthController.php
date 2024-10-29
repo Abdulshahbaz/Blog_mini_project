@@ -17,10 +17,10 @@ class AuthController extends Controller
         if(Auth::check())
         {
        $post = Postblog::where('user_id',Auth::id())
-               ->where('status',1) //--->status 1 hai  
-               ->orderBy('created_at', 'desc') //-->latest post is  top
-               ->paginate(10); //--->show  10 records
-        return view('home-page',['post'=>$post]); //--->send data blade 
+               ->where('status',1)   
+               ->orderBy('created_at', 'desc') 
+               ->paginate(10);
+        return view('home-page',['post'=>$post]); 
         }
 
         else
@@ -53,11 +53,9 @@ class AuthController extends Controller
        $register->name = $request->input('name');
        $register->email = $request->input('email');
        $register->password =Hash::make($request->password);
-      // dd($register);
        $register->save();
 
         //check user is registed are not 
-       // user register form submit then redirect  dashboard
        if(Auth::attempt($request->only('email','password'))){
         return redirect('/')->with('success','User Register SuccessFully!');
        }
@@ -80,14 +78,13 @@ class AuthController extends Controller
         ]);
              $credentials = $request->only('email','password');
              $user = User::where('email',$credentials['email'])->first();
-             
-             //check $user or $user->status same is 0  
+              
           if($user && $user->status == 0)
           {
             return redirect()->back()->with('error','Your Account is Block!');
           }   
 
-          //check user is registed are not
+
         if(Auth::attempt($request->only('email','password'))){
             return redirect('/');
            }
@@ -111,7 +108,6 @@ class AuthController extends Controller
         $post->title = $request->title;
         $post->description = $request->description;
         $post->user_id = Auth()->user()->id;
-       // dd($post);
         $post->save();
 
         return redirect('/')->with('success','Post Create SuccessFully!');
@@ -120,14 +116,14 @@ class AuthController extends Controller
     public function my_blog()
     {
         $mypost = Postblog::where('user_id',Auth::id())->get();     
-        return view('my-blog',compact('mypost'));
+        return view('my-blog',['mypost'=>$mypost]);
     }
 
 
     public function edit($id)
     {
         $data = Postblog::find($id);
-        return view('edit',compact('data'));
+        return view('edit',['data'=>$data]);
     }
 
     public function update(Request $request,$id)
@@ -136,10 +132,10 @@ class AuthController extends Controller
          
          if(!$mydata)
          {
-            return redirect()->back()->with('error','Not Update Your Record!');
+            return redirect()->back()->with('error','Not Update Your Post!');
          }
 
-      //  dd($request);
+
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -149,7 +145,6 @@ class AuthController extends Controller
           $mydata->title = $request->input('title');
           $mydata->description = $request->input('description');
         //   $mydata->user_id = Auth()->user()->id;
-        //  dd($mydata);
           $mydata->save();
   
           return redirect('my-blog')->with('success','Post Updated SuccessFully!');
