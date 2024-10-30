@@ -11,13 +11,13 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
 
-    // see admin login page
+   
     public function login()
     {
         return view('admin.admin-login');
     }
 
-    // register admin login only
+  
     public function login_show(Request $request)
     {
         
@@ -26,11 +26,8 @@ class AdminController extends Controller
             'password' => 'required',
    
         ]);
-  
-          // thise condition check thise admin exits are not 
-
-            $admin = Admin::where('email',$request->email)->first();
-            if($admin && Hash::check($request->password,$admin->password))
+            $admindata = Admin::where('email',$request->email)->first();
+            if($admindata && Hash::check($request->password,$admindata->password))
             {            
                 return redirect()->route('dashboard')->with('success','successfully Login Admin');
             }                                                  
@@ -38,28 +35,27 @@ class AdminController extends Controller
     }
 
 
-   // show list post  with pagination 10 record 
     public function create()
     {
         $post =  Postblog::paginate(10);
         return view('admin.post-list',['post'=>$post]);
     }   
     
-    //show user list with pagination 10record
+   
     public function users_list()
     {
-        $users = User::paginate(10);
-        return view('admin.users-list',['users'=>$users]);
+        $userslist = User::paginate(10);
+        return view('admin.users-list',['userslist'=>$userslist]);
     }
 
-    // show edit post  
+  
     public function edits($id)
     {
         $post = Postblog::find($id);
         return view('admin.edit',['post'=>$post]);
     }
 
-    // update post 
+
     public function update_post(Request $request,$id)
     {
         $posts = Postblog::find($id);
@@ -79,23 +75,24 @@ class AdminController extends Controller
     }
 
  
-    // check user status 1 or not 1 is exits to change status is 0
     public function toggle_button($id)
     {
-        $user = User::find($id);
-        if($user->status == 1)
+        $userdata = User::find($id);
+        if($userdata->status == 1)
         {
-           $user->status  = 0;
+           
+           $userdata->status  = 0;
         }
         else
         {
-            $user->status  = 1;
+           
+            $userdata->status  = 1;
         }
-        $user->save();
-        return redirect()->back()->with('success','SuccessFully Update User');
+        $userdata->save();
+        $meassasge =  $userdata->status == 0 ? 'User Block SuccessFully!' : 'User Unblock SuccessFully!';
+        return redirect()->back()->with('success', $meassasge);
     }
 
-    // check post status 1 or not 1 is exits to change status is 0
     public function toggle_post($id)
     {
          $post = Postblog::find($id);
@@ -110,10 +107,11 @@ class AdminController extends Controller
          }
 
          $post->save();
-         return redirect()->back()->with('success','User Post Block Successfully!');
+         $meassasge =  $post->status == 0 ? 'Post Block SuccessFully!' : 'Post Unblock SuccessFully!';
+         return redirect()->back()->with('success',$meassasge);
     }
 
-    // delete post 
+
     public function delete_post($id)
     {
         $postDelete = Postblog::find($id);

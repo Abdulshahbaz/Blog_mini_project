@@ -1,8 +1,6 @@
 @extends('admin.layout.app')
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container">
                 <div class="row">
@@ -45,8 +43,8 @@
                                                         class="btn btn-warning d-inline">edit</a>
 
                                                     <form action="{{ route('delete.post', $item->id) }}" method="POST"
-                                                         class="d-inline">
-                                                         @csrf
+                                                        class="d-inline">
+                                                        @csrf
                                                         <button type="submit" class="btn btn-info"
                                                             onclick="return confirm('Are you sure you want to delete this data?')">
                                                             delete</button>
@@ -59,8 +57,8 @@
                                                             class="btn {{ $item->status ? 'btn-danger' : 'btn-success' }}">
                                                             {{ $item->status ? 'Block' : 'Unblock' }}</button>
                                                     </form>
-                                                    
-                                                  </form>
+
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -69,7 +67,6 @@
                             </div>
 
                         </div>
-                        <!-- /.card -->
                     </div>
                 </div>
             </div>
