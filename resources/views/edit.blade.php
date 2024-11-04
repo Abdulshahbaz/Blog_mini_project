@@ -30,11 +30,11 @@
                 </div>
        
          <div class="card-body">  
-            <form action="{{route('update',$data->id)}}" method="POST" enctype="multipart/form-data">
+            <form action="{{route('update',$mypost->id)}}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="mb-3">
               <label for="exampleInputTitle" class="form-label mt-1">Title</label>
-              <input type="text" class="form-control" name="title" value="{{$data->title}}">
+              <input type="text" class="form-control" name="title" value="{{$mypost->title}}">
                @error('title')
                    <div class="text-danger">{{$message}}</div>
                @enderror
@@ -42,7 +42,7 @@
 
             <div class="mb-3">
                 <label for="exampleInputTitle" class="form-label mt-1">Description</label>
-                <textarea class="form-control"  name="description" id="editor">{{$data->description}}</textarea>
+                <textarea class="form-control"  name="description" id="editor">{{$mypost->description}}</textarea>
                 @error('description')
                 <div class="text-danger">{{$message}}</div>
             @enderror

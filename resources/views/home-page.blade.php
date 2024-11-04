@@ -44,7 +44,7 @@
 <!-- Thumbnails -->
 <div class="container thumbs">
   <div class="row">
-    @foreach ($post as $item)
+    @foreach ($posts as $item)
     <div class="col-sm-6 col-md-4 d-flex align-items-stretch mb-4">
       <div class="thumbnail d-flex flex-column">
         <img src="{{asset('img/pic1.jpg')}}" alt="" class="img-responsive">

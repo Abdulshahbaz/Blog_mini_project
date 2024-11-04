@@ -3,89 +3,84 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
- use App\Models\User;
- use App\Models\Postblog;
- use Hash;
- use Auth;
- use Session;
+use App\Models\User;
+use App\Models\Postblog;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
+
 class AuthController extends Controller
 {
     public function index()
     {
- 
-        if(Auth::check())
-        {
-       $post = Postblog::where('user_id',Auth::id())
-               ->where('status',1)   
-               ->orderBy('created_at', 'desc') 
-               ->paginate(10);
-        return view('home-page',['post'=>$post]); 
-        }
 
-        else
-        {
-            $post = Postblog::orderBy('created_at', 'desc')
-                    ->where('status',1)
-                    ->paginate(10);
-                    return view('home-page',['post'=>$post]);
+        if (Auth::check()) {
+            $posts = Postblog::where('user_id', Auth::id())
+                ->where('status', 1)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+            return view('home-page', ['posts' => $posts]);
+        } else {
+            $posts = Postblog::orderBy('created_at', 'desc')
+                ->where('status', 1)
+                ->paginate(10);
+            return view('home-page', ['posts' => $posts]);
         }
-        
     }
-   
+
 
     public function register_view()
     {
-       return view('auth.register');
+        return view('auth.register');
     }
- 
+
     public function register_store(Request $request)
     {
-       $request->validate([
-         'name' => 'required| string|max:255',
-         'email' => 'required|email|unique:users',
-         'password' => 'required|string|min:8',
+        $request->validate([
+                'name' => 'required| string|max:255',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|string|min:8',
 
-       ]);
+            ]);
 
-       $userregister = new User;
-       $userregister->name = $request->input('name');
-       $userregister->email = $request->input('email');
-       $userregister->password =Hash::make($request->password);
-       $userregister->save();
+        $userregister = new User;
+        $userregister->name = $request->input('name');
+        $userregister->email = $request->input('email');
+        $userregister->password = Hash::make($request->password);
+        $userregister->save();
 
-       if(Auth::attempt($request->only('email','password'))){
-        return redirect('/')->with('success','User Register SuccessFully!');
-       }
-       return redirect()->back()->with('error','Please Enter Valid Email and Password');
+        if (Auth::attempt($request->only('email', 'password'))) {
+            return redirect('/')->with('success', 'User Register SuccessFully!');
+        }
+        return redirect()->back()->with('error', 'Please Enter Valid Email and Password');
     }
 
- 
+
     public function login()
     {
-         return view('auth.login');
+        return view('auth.login');
     }
 
 
     public function login_user(Request $request)
     {
         $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-   
-        ]);
-             $credentials = $request->only('email','password');
-             $userdata = User::where('email',$credentials['email'])->first();
-              
-          if($userdata && $userdata->status == 0)
-          {
-            return redirect()->back()->with('error','Your Account is Block!');
-          }   
+                'email' => 'required',
+                'password' => 'required',
 
+            ]);
+        $credentials = $request->only('email', 'password');
+        $userlogin = User::where('email', $credentials['email'])->first();
 
-        if(Auth::attempt($request->only('email','password'))){
+        if ($userlogin && $userlogin->status == 0) {
+            return redirect()->back()->with('error', 'Your Account is Block!');
+        }
+
+        if (Auth::attempt($request->only('email', 'password'))) {
             return redirect('/');
-           }
-           return redirect()->back()->with('error','Please Eneter Valid Email and Pasword');
+        }
+        return redirect()->back()->with('error', 'Please Eneter Valid Email and Pasword');
     }
 
     public function post_blog()
@@ -97,67 +92,65 @@ class AuthController extends Controller
     public function post_store(Request $request)
     {
         $request->validate([
-          'title' => 'required|string|max:255',
-          'description' => 'required|string|min:10|max:1000',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|min:10|max:1000',
         ]);
-         
+
         $post = new Postblog;
         $post->title = $request->title;
         $post->description = $request->description;
         $post->user_id = Auth()->user()->id;
         $post->save();
 
-        return redirect('/')->with('success','Post Create SuccessFully!');
+        return redirect('/')->with('success', 'Post Create SuccessFully!');
     }
 
     public function my_blog()
     {
-        $mypost = Postblog::where('user_id',Auth::id())->get();     
-        return view('my-blog',['mypost'=>$mypost]);
+        $mypost = Postblog::where('user_id', Auth::id())->get();
+        return view('my-blog', ['mypost' => $mypost]);
     }
 
 
     public function edit($id)
     {
-        $data = Postblog::find($id);
-        return view('edit',['data'=>$data]);
+        $mypost = Postblog::find($id);
+        return view('edit', ['mypost' => $mypost]);
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $mydata = Postblog::find($id);
-         
-         if(!$mydata)
-         {
-            return redirect()->back()->with('error','Not Update Your Post!');
-         }
+        $mypost = Postblog::find($id);
+
+        if (!$mypost) {
+            return redirect()->back()->with('error', 'Not Update Your Post!');
+        }
 
 
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-          ]);
-           
+        ]);
 
-          $mydata->title = $request->input('title');
-          $mydata->description = $request->input('description');
-          $mydata->save();
-  
-          return redirect('my-blog')->with('success','Post Updated SuccessFully!');
-  
+
+        $mypost->title = $request->input('title');
+        $mypost->description = $request->input('description');
+        $mypost->save();
+
+        return redirect('my-blog')->with('success', 'Post Updated SuccessFully!');
     }
 
     public function delete($id)
     {
-        $data = Postblog::find($id);
-        $data->delete();
-        return redirect('my-blog')->with('success','Your Post is Deleted SuccessFully!');
+        $mypost = Postblog::find($id);
+        $mypost->delete();
+        return redirect('my-blog')->with('success', 'Your Post is Deleted SuccessFully!');
     }
 
     public function logout()
-      {
-           Session::flush();
-           Auth::logout();
-           return redirect('/');
-       }
+    {
+        Session::flush();
+        Auth::logout();
+        return redirect('/');
+    }
 }
