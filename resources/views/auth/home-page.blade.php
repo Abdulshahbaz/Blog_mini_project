@@ -51,7 +51,6 @@
         <div class="caption">
           <h3 class="">{{$item->title}}</h3>
           <p>{!! $item->description !!}</p>
-          
         </div>
       </div>
     </div>

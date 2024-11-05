@@ -16,7 +16,7 @@
 </style>
     <div class="container main">
         <div class="row justify-content-center">
-            <div class="clo-md-4">
+            <div class="col-md-12" style="padding:10px">
                 <div class="card">
                     <div class="card-header">
                         <h1>Post Blog</h1>
@@ -43,7 +43,7 @@
                                 @enderror
                             </div>
 
-                            <button type="submit" class="btn btn-primary" style="margin-top:15px;">Save</button>
+                            <button type="submit" class="btn btn-primary" style="margin-top:8px;">Save</button>
 
                         </form>
                     </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 // -----------------HOME PAGE------------------
 Route::get('/',[AuthController::class,'index']);
 
+
 // --------------------Admin login----------------------
 Route::get('admin-login',[AdminController::class,'login'])->name('login');
 Route::post('admin-login',[AdminController::class,'login_show'])->name('login_admin');
@@ -28,6 +29,7 @@ Route::post('admin-login',[AdminController::class,'login_show'])->name('login_ad
 //---------------------Login User Access thise Route-----------------------------
 Route::group(['middleware'=>'auth'],function()
 {
+    Route::get('users/dashboard',[AuthController::class,'users_show'])->name('users.dashbpoard');
     Route::get('my-blog',[AuthController::class,'my_blog'])->name('my.blog');
     Route::get('post-blog',[AuthController::class,'post_blog'])->name('post.blog');
     Route::post('post-blog',[AuthController::class,'post_store'])->name('post.store');

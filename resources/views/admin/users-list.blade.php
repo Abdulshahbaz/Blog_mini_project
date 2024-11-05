@@ -52,7 +52,7 @@
                                     </tbody>
                                 </table>
                                 <div class="float-end">
-                                    {{ $userslist->links() }}
+                                    {{ $posts->links() }}
                                 </div>
                             </div>
 

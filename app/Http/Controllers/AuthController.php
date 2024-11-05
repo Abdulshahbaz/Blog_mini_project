@@ -14,21 +14,25 @@ class AuthController extends Controller
 {
     public function index()
     {
-
-        if (Auth::check()) {
-            $posts = Postblog::where('user_id', Auth::id())
-                ->where('status', 1)
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
-            return view('home-page', ['posts' => $posts]);
-        } else {
             $posts = Postblog::orderBy('created_at', 'desc')
                 ->where('status', 1)
                 ->paginate(10);
             return view('home-page', ['posts' => $posts]);
-        }
+      
     }
 
+    public function users_show()
+    {
+        if (Auth::check()) {
+            $posts = Postblog::orderBy('created_at', 'desc')
+                ->where('status', 1)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+                return view('auth.home-page', ['posts' => $posts]);
+
+        } 
+    
+    }
 
     public function register_view()
     {
@@ -51,7 +55,7 @@ class AuthController extends Controller
         $userregister->save();
 
         if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect('/')->with('success', 'User Register SuccessFully!');
+            return redirect('users/dashboard')->with('success', 'User Register SuccessFully!');
         }
         return redirect()->back()->with('error', 'Please Enter Valid Email and Password');
     }
@@ -78,7 +82,7 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect('/');
+            return redirect('users/dashboard');
         }
         return redirect()->back()->with('error', 'Please Eneter Valid Email and Pasword');
     }
@@ -102,7 +106,7 @@ class AuthController extends Controller
         $post->user_id = Auth()->user()->id;
         $post->save();
 
-        return redirect('/')->with('success', 'Post Create SuccessFully!');
+        return redirect('users/dashboard')->with('success', 'Post Create SuccessFully!');
     }
 
     public function my_blog()
