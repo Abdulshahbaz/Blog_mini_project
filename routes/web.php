@@ -11,12 +11,12 @@ Route::get('/',[AuthController::class,'index']);
 
 // --------------------Admin login----------------------
 Route::get('admin-login',[AdminController::class,'login'])->name('login');
-Route::post('admin-login',[AdminController::class,'login_show'])->name('login_admin');
+Route::post('admin-login',[AdminController::class,'admin_login'])->name('login_admin');
 
 // -----------------------Only Admin Access---------------
  Route::group(['middleware'=>'admin'],function()
       {                  
-         Route::get('dashboard',[AdminController::class,'create'])->name('dashboard');
+         Route::get('dashboard',[AdminController::class,'user_post_list'])->name('admin.dashboard');
          Route::get('users-list',[AdminController::class,'users_list'])->name('users.list');
          Route::post('users-list/{id}',[AdminController::class,'toggle_button'])->name('toggle.button');
          Route::post('post-list/{id}',[AdminController::class,'toggle_post'])->name('toggle.post');

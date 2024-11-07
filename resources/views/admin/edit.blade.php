@@ -14,16 +14,16 @@
             <div class="clo-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h1>Admin Edit
+                        <h1>Post Edit
                         </h1>
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('update.post', $post->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('update.post', $edit_post->id) }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="mb-3">
                                 <label for="exampleInputTitle" class="form-label mt-1">Title</label>
-                                <input type="text" class="form-control" name="title" value="{{ $post->title }}">
+                                <input type="text" class="form-control" name="title" value="{{ $edit_post->title }}">
                                 @error('title')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -31,7 +31,7 @@
 
                             <div class="mb-3">
                                 <label for="exampleInputTitle" class="form-label mt-1">Description</label>
-                                <textarea class="form-control" name="description" id="editor">{{ $post->description }}</textarea>
+                                <textarea class="form-control" name="description" id="editor">{{ $edit_post->description }}</textarea>
                                 @error('description')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

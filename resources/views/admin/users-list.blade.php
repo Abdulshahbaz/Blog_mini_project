@@ -32,7 +32,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($posts as $key => $item)
+                                        @foreach ($user_lists as $key => $item)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $item->name }}</td>
@@ -52,7 +52,7 @@
                                     </tbody>
                                 </table>
                                 <div class="float-end">
-                                    {{ $posts->links() }}
+                                    {{ $user_lists->links() }}
                                 </div>
                             </div>
 

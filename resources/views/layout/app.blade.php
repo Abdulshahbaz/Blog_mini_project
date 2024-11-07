@@ -18,9 +18,6 @@
     <!--Bootshape-->
     <link href="{{asset('css/bootshape.css')}}" rel="stylesheet">
   </head>
-  <style>
-    
-  </style>
   <body>
      
     @include('layout.header')
@@ -33,5 +30,6 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/bootshape.js')}}"></script>
+    @yield('javascript')
   </body>
 </html>

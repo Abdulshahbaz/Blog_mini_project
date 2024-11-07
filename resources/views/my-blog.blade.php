@@ -22,7 +22,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($mypost as $key =>$item)
+                                    @foreach ($my_posts as $key =>$item)
                                         <tr>
                                             <td>{{ $key + 1}}</td>
                                             <td>{{ $item->title }}</td>

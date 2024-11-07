@@ -33,7 +33,7 @@
                                     </thead>
                                     <tbody>
 
-                                        @foreach ($post as $key => $item)
+                                        @foreach ($user_posts as $key => $item)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $item->title }}</td>

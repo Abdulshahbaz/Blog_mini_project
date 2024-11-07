@@ -48,11 +48,11 @@ class AuthController extends Controller
 
             ]);
 
-        $userregister = new User;
-        $userregister->name = $request->input('name');
-        $userregister->email = $request->input('email');
-        $userregister->password = Hash::make($request->password);
-        $userregister->save();
+        $user_register = new User;
+        $user_register->name = $request->input('name');
+        $user_register->email = $request->input('email');
+        $user_register->password = Hash::make($request->password);
+        $user_register->save();
 
         if (Auth::attempt($request->only('email', 'password'))) {
             return redirect('users/dashboard')->with('success', 'User Register SuccessFully!');
@@ -75,9 +75,9 @@ class AuthController extends Controller
 
             ]);
         $credentials = $request->only('email', 'password');
-        $userlogin = User::where('email', $credentials['email'])->first();
+        $user_login = User::where('email', $credentials['email'])->first();
 
-        if ($userlogin && $userlogin->status == 0) {
+        if ($user_login && $user_login->status == 0) {
             return redirect()->back()->with('error', 'Your Account is Block!');
         }
 
@@ -111,22 +111,22 @@ class AuthController extends Controller
 
     public function my_blog()
     {
-        $mypost = Postblog::where('user_id', Auth::id())->get();
-        return view('my-blog', ['mypost' => $mypost]);
+        $my_posts = Postblog::where('user_id', Auth::id())->get();
+        return view('my-blog', ['my_posts' => $my_posts]);
     }
 
 
     public function edit($id)
     {
-        $mypost = Postblog::find($id);
-        return view('edit', ['mypost' => $mypost]);
+        $my_post = Postblog::find($id);
+        return view('edit', ['my_post' => $my_post]);
     }
 
     public function update(Request $request, $id)
     {
-        $mypost = Postblog::find($id);
+        $my_post = Postblog::find($id);
 
-        if (!$mypost) {
+        if (!$my_post) {
             return redirect()->back()->with('error', 'Not Update Your Post!');
         }
 
@@ -137,17 +137,16 @@ class AuthController extends Controller
         ]);
 
 
-        $mypost->title = $request->input('title');
-        $mypost->description = $request->input('description');
-        $mypost->save();
+        $my_post->title = $request->input('title');
+        $my_post->description = $request->input('description');
+        $my_post->save();
 
         return redirect('my-blog')->with('success', 'Post Updated SuccessFully!');
     }
 
     public function delete($id)
     {
-        $mypost = Postblog::find($id);
-        $mypost->delete();
+        Postblog::destroy($id);
         return redirect('my-blog')->with('success', 'Your Post is Deleted SuccessFully!');
     }
 
