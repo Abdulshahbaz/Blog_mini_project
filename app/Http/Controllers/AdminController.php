@@ -40,7 +40,8 @@ class AdminController extends Controller
     public function user_post_list()
     {
         $user_posts =  Postblog::paginate(10);
-        return view('admin.post-list', ['user_posts' => $user_posts]);
+        return view('admin.blogs-list', ['user_posts' => $user_posts]);
+        
     }
 
 
@@ -54,7 +55,7 @@ class AdminController extends Controller
     public function edits($id)
     {
         $edit_post = Postblog::find($id);
-        return view('admin.edit', ['edit_post' => $edit_post]);
+        return view('admin.blog-edit', ['edit_post' => $edit_post]);
     }
 
 
@@ -94,13 +95,16 @@ class AdminController extends Controller
     public function toggle_post($id)
     {
         $post_status = Postblog::find($id);
+
         if ($post_status->status == 1) {
+
             $post_status->status = 0;
-        } else {
+        } 
+        else {
             $post_status->status = 1;
         }
-
         $post_status->save();
+
         $meassasge =  $post_status->status == 0 ? 'Post Block SuccessFully!' : 'Post Unblock SuccessFully!';
         return redirect()->back()->with('success', $meassasge);
     }
