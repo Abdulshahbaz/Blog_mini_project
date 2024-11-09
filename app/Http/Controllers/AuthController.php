@@ -119,7 +119,7 @@ class AuthController extends Controller
     public function edit($id)
     {
         $my_post = Postblog::find($id);
-        return view('user-edit', ['my_post' => $my_post]);
+        return view('user-blog-edit', ['my_post' => $my_post]);
     }
 
     public function update(Request $request, $id)

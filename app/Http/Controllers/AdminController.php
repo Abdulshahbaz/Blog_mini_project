@@ -39,7 +39,7 @@ class AdminController extends Controller
 
     public function user_post_list()
     {
-        $user_posts =  Postblog::paginate(10);
+        $user_posts =Postblog::paginate(10);
         return view('admin.blogs-list', ['user_posts' => $user_posts]);
         
     }
